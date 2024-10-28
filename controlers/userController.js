@@ -78,31 +78,32 @@ const createUser = async (req, res) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    let user = await User.findOne({ email });
-    const isMatch = await bcrypt.compare(password, user.password);
-    delete user.password;
-    delete user._id;
-    delete user.__v;
-    delete user.createdAt;
-    if (isMatch) {
-        const token  = await jwt.sign({user},process.env.SECRET_KEY,{expiresIn:'1h',algorithm:'HS512'})
-      res.send({
-        email:user.email,
-        username:user.username,
-        token:token,
-        message:"Login is successful",
-        status:'200'
-      }).status(200);
-    } else {
-      res.send({
-        message:
-          "Invalid credantials enter by the user please enter correct details",
-      });
-    }
-  } catch (err) {
-    res.send(err).status(500);
+      let user = await User.findOne({ email });
+      const isMatch = await bcrypt.compare(password, user.password);
+      delete user.password;
+      delete user._id;
+      delete user.__v;
+      delete user.createdAt;
+      if (isMatch) {
+          const token = await jwt.sign({ user }, process.env.SECRET_KEY, { expiresIn: '1h', algorithm: 'HS512' })
+          res.send({
+              email: user.email,
+              username: user.username,
+              token: token,
+              message: "Logged in Successfully",
+              status:'200'
+          }).status(200);
+      } else {
+          res.send({ message: 'invalid Credentails please enter correct details', status:'500' });
+
+      }
   }
-};
+  catch (err) {
+      res.send(err).status(500);
+  }
+
+}
+
 
 module.exports = {
   getAllUsers,

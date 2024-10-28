@@ -5,7 +5,7 @@ const { verifyToken } = require("../validators/validators")
 
 
 router.get("/:name",getUserById);
-router.post("/",createUser);
+router.post("/singup",createUser);
 router.put("/:id",updateUser);
 router.delete("/:email",deleteUserById);
 router.get("/",verifyToken,getAllUsers);
